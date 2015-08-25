@@ -31,8 +31,27 @@ public class AparapiTanh extends ConnectionCalculatorFullyConnected {
 	protected void after() {
 	    int end = outputStartPosition + getGlobalId() * outputRowStep + miniBatchSize * outputColumnStep;
 	    for (int i = outputStartPosition + getGlobalId() * outputRowStep; i < end; i += outputColumnStep) {
-		output[i] = tan(output[i]);
+		output[i] = tanHApply(output[i]);
 	    }
 	}
+
+     /**
+     * Calculating the hyperbolic tanH function.
+     * @param input
+     * @return
+     */
+      public float tanHApply(float input) {
+  	if (input == 0f) {
+             return  0f;
+	 } else  if (input >= 20f) {
+            return 1f;
+         } else if (input <= -20f) {
+            return -1f;
+        } 
+  
+        float pos = exp(input);
+        float neg = exp(-input);
+        return (pos - neg)/(pos + neg);
     }
+  }
 }
